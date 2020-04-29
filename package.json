@@ -1,0 +1,23 @@
+{
+  "name": "fabric-wasm-test",
+  "version": "1.0.0",
+  "description": "A development-test Wasm runtime for loading in Contracts compiled to Wasm for testing",
+  "main": "index.js",
+  "scripts": {
+    "protos": "pbjs -t static-module -w commonjs -o protos/compiled.js protos/message.proto"
+  },
+  "bin": {
+    "fwt": "bin/cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "protobufjs": "^6.8.8",
+    "yargs": "^15.3.1"
+  }
+}
