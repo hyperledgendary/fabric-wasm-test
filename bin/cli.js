@@ -14,8 +14,9 @@ let yargs = require('yargs')
     })
   }, function (argv) {
     return testruntime.run(argv.wasmfile).then().catch(error => {
-        console.log(error);
+      console.log(error);
     });
   })
+  .demandCommand()
   .help()
   .argv

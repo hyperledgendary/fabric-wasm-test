@@ -4,7 +4,7 @@
   "description": "A development-test Wasm runtime for loading in Contracts compiled to Wasm for testing",
   "main": "index.js",
   "scripts": {
-    "protos": "pbjs -t static-module -w commonjs -o protos/compiled.js protos/message.proto"
+    "start": "fwt run /home/matthew/github.com/hyperledgendary/fabric-contract-api-rust/target/wasm32-unknown-unknown/release/basic_contract_rs.wasm"
   },
   "bin": {
     "fwt": "bin/cli.js"
@@ -13,10 +13,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "@types/node": "^14.0.11",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^3.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "chalk": "^3.0.0",
+    "fabric-ledger-protos-node": "file:fabric-ledger-protos-node-1.0.0.tgz",
     "protobufjs": "^6.8.8",
     "yargs": "^15.3.1"
   }

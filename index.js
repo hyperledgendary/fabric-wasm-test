@@ -3,34 +3,39 @@
  */
 'use strict';
 
-const path = require('path');
 const chalk = require('chalk');
 const WasmRuntime = require('./lib/wasm_pcruntime');
-const {Arguments, Return} = require('./protos/compiled.js').datatypes;
+const { contract_messages , common_messages } = require('fabric-ledger-protos-node');
 
-const log = (...args)=>{
+const log = (...args) => {
     console.log(chalk.blueBright(`[host] ${args}`));
-}
+};
 
 const run = async (pathname) => {
-
-    const filename = path.resolve(pathname);
-    log(`Loading wasm code from ${filename}`);
-
-    const runtime = new WasmRuntime(filename,log);
+    if (!pathname) {
+        throw new Error('Need a filename');
+    }
+    const runtime = new WasmRuntime(pathname, log);
     await runtime.start();
-    log(`Runtime started`);    
+    log('Runtime started');
+    log('Exported functions are: ' + Object.keys(runtime.wasm.instance.exports).reduce((c, e) => `${c}   ${e}`));
 
-    let rc = await runtime.launch();
-    log(`Contract launched with rc=${rc}`);
+    // pass the first invoke transaction request
+    const itr = new contract_messages.InvokeTransactionRequest();
 
-    log('Creating protoBuf for "createAsset()"');
-    const params = Arguments.create({fnname:'create_asset', args:['007','Bond, James Bond']});
-    const buffer = Arguments.encode(params).finish();
+    itr.setTransactionName('AssetContract:create_asset');
+    let args = [];
+    args.push(Buffer.from("007"));
+    args.push(Buffer.from('Bond, James Bond'));
+    itr.setArgsList(args);
+    
+    const ctx = new common_messages.TransactionContext();
 
-    log(JSON.stringify(params));
-    let result = await runtime.call('contract',buffer);
-    log(JSON.stringify(result));
+    ctx.setChannelId('mychannel');
+    ctx.setTransactionId('0xCAFEBABE');
+    itr.setContext(ctx)
+    
+    runtime.call('InvokeTransaction', Buffer.from(itr.serializeBinary()));
 };
 
 module.exports.run = run;
