@@ -25,7 +25,7 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "fabric-ledger-protos-node": "file:fabric-ledger-protos-node-1.0.0.tgz",
-    "protobufjs": "^6.8.8",
+    "protobufjs": "^6.11.3",
     "yargs": "^15.3.1"
   }
 }
